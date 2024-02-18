@@ -11,13 +11,13 @@
 (method :Void println [text]
     (Sys.println text))
 
-(method :Void showImage [path] 
-    (assertProcess (case (Sys.systemName) 
+(method :Void showImage [path]
+    (assertProcess (case (Sys.systemName)
                         ("Windows" "cmd.exe")
                         ("Linux" "xdg-open")
                         ("Mac" "start")
-                        (never otherwise)) 
-                    (case (Sys.systemName) 
+                        (never otherwise))
+                    (case (Sys.systemName)
                         ("Windows" ["/C" path])
                         ((or "Mac" "Linux") [path])
                         (never otherwise))))
