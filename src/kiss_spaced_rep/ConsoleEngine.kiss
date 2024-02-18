@@ -22,7 +22,8 @@
                         ((or "Mac" "Linux") [path])
                         (never otherwise))))
 
-(method :Void delayForUserInput [cc]
+(method :Void delayForUserInput [cc &opt text]
+    (when text (Sys.println text))
     (.readLine (Sys.stdin))
     (cc))
 
