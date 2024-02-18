@@ -40,7 +40,7 @@
                     engine.print
                 }
             engine.println)
-            
+
             (if (= idx index)
                     "???? "
                 (if (StringTools.startsWith line "?")
@@ -64,7 +64,7 @@
 (function :CardSide image [:String path &opt :String caption]
     (object
         show ->:Void [engine cc] {(when caption (engine.print caption)) (engine.showImage path) (engine.delayForUserInput cc)}
-    
+
         score ->:Void [engine :Int->Void resolve] {(when caption (engine.print caption))(engine.showImage path)(engine.print "Score (0-5): ")(engine.getUserInput ->:Void str (resolve (Std.parseInt str)))}))
 
 (defMacroVar cardId 0)
@@ -111,7 +111,7 @@
                 (localFunction :Void ,cStudy [:StudyEngine engine :Void->Void cc]
                     (localFunction :Void ,cScore [:Int quality]
                         (localVar &mut interval 0)
-                        (cond 
+                        (cond
                             ((>= quality 3)
                                 (set interval (Math.ceil (case ,cRepetitions (0 1) (1 6) (more (* ,cPreviousEaseFactor ,cPreviousInterval)) (never otherwise))))
                                 (+= ,cRepetitions 1)
@@ -130,7 +130,7 @@
                     (engine.clear)
                     (if (or #{DateTime.now() > nextDate;}# (#if debug true false))
                             (.show .front ,cObject engine
-                                ->:Void 
+                                ->:Void
                                     (.score .back ,cObject engine ,cScore))
                         {
                             (engine.println "skipping a card until $(nextDate.toString)")
@@ -153,7 +153,7 @@
                     (cardDecls.push
                         `(card
                             (object
-                                show (clozeShow.bind ,i ,textLines) 
+                                show (clozeShow.bind ,i ,textLines)
                                 score ->:Void _ 0)
                             (object
                                 show ->:Void _ 0
