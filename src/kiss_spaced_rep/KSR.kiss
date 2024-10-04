@@ -173,16 +173,24 @@
             (engine.promptForRefresh ->(studyAll engine))
         }))
 
-(defReaderMacro ["*" "?"] [stream &builder b]
+(defMacroVar clozeReversed false)
+(defReaderMacro ["*" "?" "¿"] [stream &builder b]
+    (setMacroVar clozeReversed false)
     (let [elements []]
         (loop
-            (let [line (expect stream "An element for a cloze sequence" takeLine)]
+            (let [&mut reversed false
+                    line (expect stream "An element for a cloze sequence" takeLine)]
+                (unless line (break))
                 (case (line.charAt 0)
                     ("*" (elements.push (b.str (line.substr 1))))
                     ("?" (elements.push (b.str line)))
+                    ("¿" (setMacroVar clozeReversed true) (elements.push (b.str (+ "?" (line.substr 1)))))
                     ("" (break))
                     (otherwise (throw "bad element for a cloze sequence: $line")))))
-        `(cloze ,@elements)))
+        `{
+            (cloze ,@elements)
+            ,(if clozeReversed `(cloze ,@(let [r (elements.copy)] (r.reverse) r)) `null)
+        }))
 
 (defMacroFunction btDefault [exp]
     (case (Type.enumConstructor exp.def)
