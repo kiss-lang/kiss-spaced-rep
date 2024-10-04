@@ -66,7 +66,6 @@
 (function :CardSide image [:String path &opt :String caption]
     (object
         show ->:Void [engine cc] {(when caption (engine.print caption)) (engine.showImage path) (engine.delayForUserInput cc)}
-
         score ->:Void [engine :Int->Void resolve] {(when caption (engine.print caption))(engine.showImage path)(engine.print "Score (0-5): ")(engine.getUserInput ->:Void str (resolve (Std.parseInt str)) OneToFive)}))
 
 (defMacroVar cardId 0)
