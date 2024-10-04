@@ -15,7 +15,7 @@
 (function :Void basicScore [text :StudyEngine engine :Int->Void resolve]
     (engine.println text)
     (engine.print "Score (0-5): ")
-    (engine.getUserInput ->:Void str (resolve (Std.parseInt str))))
+    (engine.getUserInput ->:Void str (resolve (Std.parseInt str)) OneToFive))
 
 (function :Void noConfirmShow [text :StudyEngine engine :Void->Void cc]
     (engine.println text)
@@ -23,14 +23,16 @@
 
 (function :Void typeScore [text :StudyEngine engine :Int->Void resolve]
     (engine.print "Your answer: ")
-    (engine.getUserInput ->:Void input
-        (cond
-            ((= text input)
-                (engine.println "Correct!")
-                (resolve 5))
-            (true
-                (engine.println "Wrong! Correct answer was $text")
-                (resolve 0)))))
+    (engine.getUserInput
+        ->:Void input
+            (cond
+                ((= text input)
+                    (engine.println "Correct!")
+                    (resolve 5))
+                (true
+                    (engine.println "Wrong! Correct answer was $text")
+                    (resolve 0)))
+        Text))
 
 (function :Void clozeShow [index textLines :StudyEngine engine :Void->Void cc]
     (doFor [idx &mut line] (enumerate textLines)
@@ -65,7 +67,7 @@
     (object
         show ->:Void [engine cc] {(when caption (engine.print caption)) (engine.showImage path) (engine.delayForUserInput cc)}
 
-        score ->:Void [engine :Int->Void resolve] {(when caption (engine.print caption))(engine.showImage path)(engine.print "Score (0-5): ")(engine.getUserInput ->:Void str (resolve (Std.parseInt str)))}))
+        score ->:Void [engine :Int->Void resolve] {(when caption (engine.print caption))(engine.showImage path)(engine.print "Score (0-5): ")(engine.getUserInput ->:Void str (resolve (Std.parseInt str)) OneToFive)}))
 
 (defMacroVar cardId 0)
 (defMacroVar groupId 0)
